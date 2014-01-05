@@ -81,6 +81,11 @@ if echo "$GIT_BRANCH" | grep fixes 2>&1 1>/dev/null; then
 	GIT_MAJOR_RELEASE=$(echo $GIT_BRANCH |sed 's,.*0.,,')
 	DELIMITTER="+"
 	echo "Building for fixes, v0.$GIT_MAJOR_RELEASE in $DIRECTORY"
+elif echo "$GIT_BRANCH" | grep athome 2>&1 1>/dev/null; then
+	GIT_TYPE="athome"
+	GIT_MAJOR_RELEASE=$(echo $GIT_BRANCH |sed 's,.*0.,,')
+	DELIMITTER="+"
+	echo "Building for athome, v0.$GIT_MAJOR_RELEASE in $DIRECTORY"
 else
 	GIT_TYPE="master"
 	DELIMITTER="~"

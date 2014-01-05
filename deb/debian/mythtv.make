@@ -30,6 +30,17 @@ ifeq "$(GIT_TYPE)" "master"
         GIT_BRANCH:=master
 	GIT_BRANCH_FALLBACK=master
 	DELIMITTER="~"
+else ifeq "$(GIT_TYPE)" "athome"
+        GIT_BRANCH:=athome/0.$(GIT_MAJOR_RELEASE)
+	GIT_BRANCH_FALLBACK=master
+	DELIMITTER="+"
+	MAIN_GIT_URL=git://github.com/sdrik/mythtv.git
+	MYTHWEB_GIT_URL=git://github.com/sdrik/mythweb.git
+	MYTHBUNTU_THEME_GIT_URL=git://github.com/sdrik/Mythbuntu.git
+	#skip the "Scripted Build" entry which contains no valid hash
+	ifeq "$(GIT_HASH)" ""
+		GIT_HASH:=$(shell dpkg-parsechangelog --offset 1 --count 1 | sed '/^Version/!d; s/.*~//; s/.*+//; s/-.*//;' | awk -F. '{print $$3}')
+	endif
 else
         GIT_BRANCH:=fixes/0.$(GIT_MAJOR_RELEASE)
 	GIT_BRANCH_FALLBACK=master
@@ -113,6 +124,9 @@ get-git-source:
 		if [ -n "$(AUTOBUILD)" ]; then \
 			LAST_GIT_HASH=`python debian/PPA-published-git-checker.py 0.$(GIT_MAJOR_RELEASE)` ;\
 			AUTOBUILD="Automated Build: " ;\
+		elif [ "$(GIT_TYPE)" = "athome" ]; then \
+			LAST_GIT_HASH=`python debian/PPA-published-git-checker.py athome cschieli` ;\
+			AUTOBUILD="AtHome: " ;\
 		fi ;\
 		dch -b -v $(EPOCH):$(GIT_RELEASE)$(DELIMITTER)$(GIT_TYPE).$(TODAY).$$GIT_HASH-$(DEBIAN_SUFFIX) "$${AUTOBUILD}New upstream checkout ($$GIT_HASH)";\
 	else \

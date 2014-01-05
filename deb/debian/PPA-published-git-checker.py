@@ -11,6 +11,10 @@ people = launchpad.people
 
 ## Which team 
 mythbuntugroup = people['mythbuntu']
+if len(sys.argv) == 3:
+	othergroup = people[sys.argv[2]]
+	if othergroup is not None:
+		mythbuntugroup = othergroup
 
 ## Which PPA?
 archive = mythbuntugroup.getPPAByName(name=sys.argv[1])
