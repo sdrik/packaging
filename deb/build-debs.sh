@@ -134,7 +134,7 @@ cd $DIRECTORY/mythtv
 EPOCH=$(dpkg-parsechangelog | sed '/^Version/!d; s/.* //; s/:.*//;')
 #actually bump the changelog up. don't include a git hash here right now.
 dch -b -v $EPOCH:0.$GIT_MAJOR_RELEASE.$GIT_MINOR_RELEASE$DELIMITTER$GIT_TYPE.$TODAY.-$DEBIAN_SUFFIX "Scripted Build from $GIT_TYPE git packaging [$PACKAGING_HASH]"
-if [ -f $DIRECTORY/mythtv/.gitout ]; then
+if [ -f .gitout ]; then
 	while read line
 	do
 		dch -a "$line"
